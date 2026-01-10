@@ -1,22 +1,45 @@
 from tkinter import *
 from tkinter.ttk import *
+from tkinter import messagebox
+from tkinter.filedialog import *
 
 root=Tk()
 root.geometry("800x700")
 root.title("Address Book")
-def add():
-    listbox.insert(END,str(name_box.get()))
+
+address_book={}
+
+def clearall():
+    name_box.delete(0,END)
+    address_box.delete(0,END)
+    age_box.delete(0,END)
+    email_box.delete(0,END)
+    phone_numberbox.delete(0,END)
+def update():
+    key=name_box.get()
+    if key == "":
+        messagebox.showinfo("Error","Name Cannot be empty")
+    else:
+        if key not in address_book.keys():
+            list_box.insert(END,key)
+        address_book[key]=(address_box.get(),age_box.get(),email_box.get(),phone_numberbox())
+        clearall()
+#adds to listbox only if it is a new entry
+#.keys func gives us all the keys of the dictionary
+
 name_Label=Label(root,text="Name:")
 address_Label=Label(root,text="Address:")
 age_Label=Label(root,text="Age:")
 email_Label=Label(root,text="Email:")
 name_box=Entry(root)
+phone_numberlabel=Label(root,text="Phone Number:")
 address_box=Entry(root)
+phone_numberbox=Entry(root)
 age_box=Entry(root)
 email_box=Entry(root)
-listbox=Listbox(root,width=50,height=19)
+list_box=Listbox(root,width=50,height=19)
 add_button=Button(root,text="Update/Add",width=23,command=add)
-delete_button=Button(root,text="Delete",width=23)
+delete_button=Button(root,text="Delete",width=23,command=delete)
 save_button=Button(root,text="Save",width=23)
 edit_button=Button(root,text="Edit",width=23)
 open_button=Button(root,text="Open",width=23)
@@ -30,7 +53,7 @@ name_box.place(x=550,y=100)
 address_box.place(x=550,y=200)
 age_box.place(x=550,y=300)
 email_box.place(x=550,y=400)
-listbox.place(x=100,y=50)
+list_box.place(x=100,y=50)
 open_button.place(x=650,y=10)
 save_button.place(x=100,y=10)
 edit_button.place(x=100,y=360)
