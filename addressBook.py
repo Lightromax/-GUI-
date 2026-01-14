@@ -22,10 +22,50 @@ def update():
     else:
         if key not in address_book.keys():
             list_box.insert(END,key)
-        address_book[key]=(address_box.get(),age_box.get(),email_box.get(),phone_numberbox())
+        address_book[key]=(address_box.get(),age_box.get(),email_box.get(),phone_numberbox.get())
         clearall()
 #adds to listbox only if it is a new entry
 #.keys func gives us all the keys of the dictionary
+def edit():
+    clearall()
+    index=list_box.curselection()
+    if index:
+        name_box.insert(0,list_box.get(index))
+        details=address_book[name_box.get()]
+        address_box.insert(0,details[0])
+        age_box.insert(0,details[1])
+        email_box.insert(0,details[2])
+        phone_numberbox.insert(0,details[3])
+        
+    else:
+        messagebox.showinfo("Error2","No selection made")
+def delete():
+    index=list_box.curselection()
+    if index:
+        del address_book[list_box.get(index)]
+        list_box.delete(index)
+        clearall()
+    else:
+        messagebox.showinfo("Error2","No selection made")
+def display(event):
+    newWindow=Toplevel(root)
+    index=list_box.curselection()
+    contact=""
+    if index:
+        key=list_box.get(index)
+        contact="Name  :  "+key+"\n\n"
+        details=address_book[key]
+        contact += "Address : "+details[0]+"\n"
+        contact += "Age     : "+details[1]+"\n"
+        contact += "Email   : "+details[2]+"\n"
+        contact += "PhoneNumber:"+details[3]+"\n"
+    lbl=Label(newWindow)
+    lbl.grid(row=0,column=0)
+    lbl.config(text=contact)
+def reset():
+    clearall()
+    list_box.delete(0,END)
+    address_book.clear()
 
 name_Label=Label(root,text="Name:")
 address_Label=Label(root,text="Address:")
@@ -38,10 +78,10 @@ phone_numberbox=Entry(root)
 age_box=Entry(root)
 email_box=Entry(root)
 list_box=Listbox(root,width=50,height=19)
-add_button=Button(root,text="Update/Add",width=23,command=add)
+add_button=Button(root,text="Update/Add",width=23,command=update)
 delete_button=Button(root,text="Delete",width=23,command=delete)
 save_button=Button(root,text="Save",width=23)
-edit_button=Button(root,text="Edit",width=23)
+edit_button=Button(root,text="Edit",width=23,command=edit)
 open_button=Button(root,text="Open",width=23)
 
 
