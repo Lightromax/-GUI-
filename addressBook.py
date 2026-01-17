@@ -66,6 +66,25 @@ def reset():
     clearall()
     list_box.delete(0,END)
     address_book.clear()
+def save():
+    output=asksaveasfile(defaultextension=".txt")
+    if output:
+        print(address_book,file=output)
+        reset()
+    else:
+        messagebox.showinfo("Error3","Address book not saved")
+def open():
+    global address_book
+    reset()
+    inputOpen=askopenfile(title="Open File")
+    if inputOpen:
+        #eval executes string as a python expression
+        address_book=eval(inputOpen.read())
+        for key in address_book.keys():
+            list_box.insert(END,key)
+        myaddressbook.config(text=os.path.basename(inputOpen.name))
+    else:
+        messagebox.showinfo("Error3","No address book available")
 
 name_Label=Label(root,text="Name:")
 address_Label=Label(root,text="Address:")
@@ -73,6 +92,7 @@ age_Label=Label(root,text="Age:")
 email_Label=Label(root,text="Email:")
 name_box=Entry(root)
 phone_numberlabel=Label(root,text="Phone Number:")
+myaddressbook=Label(root)
 address_box=Entry(root)
 phone_numberbox=Entry(root)
 age_box=Entry(root)
@@ -80,15 +100,19 @@ email_box=Entry(root)
 list_box=Listbox(root,width=50,height=19)
 add_button=Button(root,text="Update/Add",width=23,command=update)
 delete_button=Button(root,text="Delete",width=23,command=delete)
-save_button=Button(root,text="Save",width=23)
+save_button=Button(root,text="Save",width=23,command=save)
 edit_button=Button(root,text="Edit",width=23,command=edit)
-open_button=Button(root,text="Open",width=23)
+open_button=Button(root,text="Open",width=23,command=open)
+list_box.bind("<<ListboxSelect>>",display)
 
 
 name_Label.place(x=500,y=100)
 address_Label.place(x=500,y=200)
 age_Label.place(x=500,y=300)
 email_Label.place(x=500,y=400)
+phone_numberlabel.place(x=500,y=500)
+phone_numberbox.place(x=600,y=500)
+myaddressbook.place(x=400,y=700)
 name_box.place(x=550,y=100)
 address_box.place(x=550,y=200)
 age_box.place(x=550,y=300)
@@ -98,5 +122,5 @@ open_button.place(x=650,y=10)
 save_button.place(x=100,y=10)
 edit_button.place(x=100,y=360)
 delete_button.place(x=100,y=390)
-add_button.place(x=500,y=450)
+add_button.place(x=500,y=600)
 root.mainloop()
